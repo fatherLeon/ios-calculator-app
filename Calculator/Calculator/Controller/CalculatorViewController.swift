@@ -31,42 +31,83 @@ final class CalculatorViewController: UIViewController {
     @IBAction private func didTapNumberButton(sender: UIButton) {
         guard let numberButtonTitle = sender.currentTitle else { return }
         
-        addNumberToOperandLabel(numberButtonTitle)
+        self.currentOperand += numberButtonTitle
+        
+        updateCurrentNumberLabel(self.currentOperand)
     }
     
     @IBAction private func didTapZeroButton(sender: UIButton) {
         guard let zeroButtonTitle = sender.currentTitle else { return }
         
-        addZeroToOperandLabel(zeroButtonTitle)
+        if self.isFractional == false {
+            self.currentOperand += zeroButtonTitle
+            updateCurrentNumberLabel(self.currentOperand)
+        } else {
+            self.currentOperand += zeroButtonTitle
+            self.currentOperandLabel.text = self.currentOperand
+        }
     }
     
     @IBAction private func didTapDotButton(sender: UIButton) {
-        addDotToOperandLabel()
+        guard self.currentOperand.contains(CalculatorInitial.dotSymbol) == false else { return }
+        
+        if self.currentOperand == CalculatorInitial.initValue {
+            self.currentOperand = "0."
+            self.currentOperandLabel.text = self.currentOperand
+        } else {
+            let formattedOperand = formattingNumber(self.currentOperand)
+            self.currentOperand = formattedOperand + CalculatorInitial.dotSymbol
+        }
+        
+        self.currentOperandLabel.text = self.currentOperand
     }
     
     @IBAction private func didTapOperatorButton(sender: UIButton) {
         guard let operatorButtonTitle = sender.currentTitle else { return }
         
-        touchUpOperator(operatorButtonTitle)
+        if self.currentOperandLabel.text != CalculatorInitial.initLabel {
+            let currentOperandValue = formattingNumber(self.currentOperand)
+            let currentOperatorValue = self.currentOperator
+            
+            addStackView(number: currentOperandValue, operatorType: currentOperatorValue)
+            
+            self.inputs += "\(self.currentOperator) \(self.currentOperand) "
+            
+            resetOperand()
+            
+            self.currentOperator = operatorButtonTitle
+            self.currentOperatorLabel.text = self.currentOperator
+        } else if isFirstInput == false {
+            self.currentOperator = operatorButtonTitle
+            self.currentOperatorLabel.text = self.currentOperator
+        }
+        
+        self.isCalculated = false
     }
     
     @IBAction private func didTapReverseOperandButton(sender: UIButton) {
-        reverseOperand()
+        guard let firstValue = self.currentOperand.first else { return }
+        
+        if firstValue.isNumber {
+            self.currentOperand = CalculatorInitial.negativeSymbol + self.currentOperand
+        } else if String(firstValue) == CalculatorInitial.negativeSymbol {
+            self.currentOperand.removeFirst()
+        }
+        
+        updateCurrentNumberLabel(self.currentOperand)
     }
     
     @IBAction private func didTapClearButton(sender: UIButton) {
-        clearCurrentOperand()
+        self.currentOperand = CalculatorInitial.initValue
+        self.currentOperandLabel.text = CalculatorInitial.initLabel
     }
     
     @IBAction private func didTapAllClearButton(sender: UIButton) {
-        clearAll()
+        resetAll()
+        self.removeAllStackView()
     }
     
     @IBAction private func didTapCalculateButton(sender: UIButton) {
-        calculate()
-    }
-    
-    private func calculate() {
         if self.isCalculated == false && self.currentOperand.isEmpty == false {
             addStackView(number: self.currentOperandLabel.text, operatorType: self.currentOperator)
             
@@ -91,79 +132,6 @@ final class CalculatorViewController: UIViewController {
             self.currentOperandLabel.text = formattedOperand
             self.isCalculated = true
         }
-    }
-    
-    private func clearAll() {
-        resetAll()
-        self.removeAllStackView()
-    }
-    
-    private func clearCurrentOperand() {
-        self.currentOperand = CalculatorInitial.initValue
-        self.currentOperandLabel.text = CalculatorInitial.initLabel
-    }
-    
-    private func reverseOperand() {
-        guard let firstValue = self.currentOperand.first else { return }
-        
-        if firstValue.isNumber {
-            self.currentOperand = CalculatorInitial.negativeSymbol + self.currentOperand
-        } else if String(firstValue) == CalculatorInitial.negativeSymbol {
-            self.currentOperand.removeFirst()
-        }
-        
-        updateCurrentNumberLabel(self.currentOperand)
-    }
-    
-    private func touchUpOperator(_ operatorValue: String) {
-        if self.currentOperandLabel.text != CalculatorInitial.initLabel {
-            let currentOperandValue = formattingNumber(self.currentOperand)
-            let currentOperatorValue = self.currentOperator
-            
-            addStackView(number: currentOperandValue, operatorType: currentOperatorValue)
-            
-            self.inputs += "\(self.currentOperator) \(self.currentOperand) "
-            
-            resetOperand()
-            
-            self.currentOperator = operatorValue
-            self.currentOperatorLabel.text = self.currentOperator
-        } else if isFirstInput == false {
-            self.currentOperator = operatorValue
-            self.currentOperatorLabel.text = self.currentOperator
-        }
-        
-        self.isCalculated = false
-    }
-    
-    private func addZeroToOperandLabel(_ operand: String) {
-        if self.isFractional == false {
-            self.currentOperand += operand
-            updateCurrentNumberLabel(self.currentOperand)
-        } else {
-            self.currentOperand += operand
-            self.currentOperandLabel.text = self.currentOperand
-        }
-    }
-    
-    private func addDotToOperandLabel() {
-        guard self.currentOperand.contains(CalculatorInitial.dotSymbol) == false else { return }
-        
-        if self.currentOperand == CalculatorInitial.initValue {
-            self.currentOperand = "0."
-            self.currentOperandLabel.text = self.currentOperand
-        } else {
-            let formattedOperand = formattingNumber(self.currentOperand)
-            self.currentOperand = formattedOperand + CalculatorInitial.dotSymbol
-        }
-        
-        self.currentOperandLabel.text = self.currentOperand
-    }
-    
-    private func addNumberToOperandLabel(_ operand: String) {
-        self.currentOperand += operand
-        
-        updateCurrentNumberLabel(self.currentOperand)
     }
     
     private func updateCurrentNumberLabel(_ value: String) {
