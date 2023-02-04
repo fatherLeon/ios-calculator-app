@@ -210,6 +210,7 @@ final class CalculatorViewController: UIViewController {
     }
 }
 
+// MARK: - 뷰 관련 메소드(뷰 생성, 뷰 삭제, 뷰 스크롤)
 extension CalculatorViewController {
     private func addStackView(number: String?, operatorType: String?) {
         guard let operandValue = number,
