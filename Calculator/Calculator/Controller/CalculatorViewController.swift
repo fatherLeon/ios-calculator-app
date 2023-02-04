@@ -11,7 +11,7 @@ final class CalculatorViewController: UIViewController {
     private var currentOperator: String = CalculatorInitial.initValue
     private var isCalculated: Bool = false
     private var isFractional: Bool {
-        self.currentOperand.contains(".")
+        self.currentOperand.contains(CalculatorInitial.dotSymbol)
     }
     private var isFirstInput: Bool {
         return self.formulaStackView.subviews.isEmpty
@@ -77,7 +77,7 @@ final class CalculatorViewController: UIViewController {
             
             if result.isNaN {
                 resetAll()
-                self.currentOperandLabel.text = "NaN"
+                self.currentOperandLabel.text = CalculatorInitial.notNumberSymbol
                 self.isCalculated = false
                 self.isCalculated = true
                 
@@ -107,8 +107,8 @@ final class CalculatorViewController: UIViewController {
         guard let firstValue = self.currentOperand.first else { return }
         
         if firstValue.isNumber {
-            self.currentOperand = "-" + self.currentOperand
-        } else if firstValue == "-" {
+            self.currentOperand = CalculatorInitial.negativeSymbol + self.currentOperand
+        } else if String(firstValue) == CalculatorInitial.negativeSymbol {
             self.currentOperand.removeFirst()
         }
         
@@ -147,14 +147,14 @@ final class CalculatorViewController: UIViewController {
     }
     
     private func addDotToOperandLabel() {
-        guard self.currentOperand.contains(".") == false else { return }
+        guard self.currentOperand.contains(CalculatorInitial.dotSymbol) == false else { return }
         
         if self.currentOperand == CalculatorInitial.initValue {
             self.currentOperand = "0."
             self.currentOperandLabel.text = self.currentOperand
         } else {
             let formattedOperand = formattingNumber(self.currentOperand)
-            self.currentOperand = formattedOperand + "."
+            self.currentOperand = formattedOperand + CalculatorInitial.dotSymbol
         }
         
         self.currentOperandLabel.text = self.currentOperand

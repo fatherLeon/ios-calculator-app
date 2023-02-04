@@ -4,4 +4,7 @@
 enum CalculatorInitial {
     static let initValue = ""
     static let initLabel = "0"
+    static let negativeSymbol = "-"
+    static let dotSymbol = "."
+    static let notNumberSymbol = "NaN"
 }
