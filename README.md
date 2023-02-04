@@ -51,25 +51,13 @@
 
 > 해당 프로젝트는 연산자 우선순위를 고려하지 않습니다
 
-#### 1️⃣일반적인 연산
-
-<img src="https://raw.githubusercontent.com/fatherLeon/ios-calculator-app/step3/image/동작1.gif" height="450px" width="225px">
-
-#### 2️⃣"AC"버튼 시 이전의 연산들을 초기화
-
-<img src="https://raw.githubusercontent.com/fatherLeon/ios-calculator-app/step3/image/동작2.gif" height="450px" width="225px">
-
-#### 3️⃣"CE"를 누를 시 현재 숫자를 지움
-
-<img src="https://raw.githubusercontent.com/fatherLeon/ios-calculator-app/step3/image/동작3.gif" height="450px" width="225px">
-
-#### 4️⃣숫자입력이 없는 상태에서 연산자를 누를 경우 연산자만 바뀜
-
-<img src="https://raw.githubusercontent.com/fatherLeon/ios-calculator-app/step3/image/동작4.gif" height="450px" width="225px">
-
-#### 5️⃣x / 0을 할 경우 NaN이 출력된다
-
-<img src="https://raw.githubusercontent.com/fatherLeon/ios-calculator-app/step3/image/동작5.gif" height="450px" width="225px">
+|기능|실행화면|
+|:--:|:--:|
+|일반적인 연산|<img src="https://raw.githubusercontent.com/fatherLeon/ios-calculator-app/step3/image/동작1.gif" height="350px" width="175px">|
+|AC버튼 클릭 시 이전 연산 초기화|<img src="https://raw.githubusercontent.com/fatherLeon/ios-calculator-app/step3/image/동작2.gif" height="350px" width="175px">|
+|CE버튼 클릭 시 현재 입력된 숫자를 초기화|<img src="https://raw.githubusercontent.com/fatherLeon/ios-calculator-app/step3/image/동작3.gif" height="350px" width="175px">|
+|숫자입력이 없는 상태에서 연산자를 누를 경우 연산자만 변경|<img src="https://raw.githubusercontent.com/fatherLeon/ios-calculator-app/step3/image/동작4.gif" height="350px" width="175px">|
+|x / 0 을 할 경우 NaN 출력|<img src="https://raw.githubusercontent.com/fatherLeon/ios-calculator-app/step3/image/동작5.gif" height="350px" width="175px">|
 
 ---
 
@@ -149,26 +137,6 @@ mutating func removeFirst() -> Element? {
 * 수정 전 head의 값만 빼줌으로 인해 마지막 하나 남은 tail값은 반환은 되지만 LinkedList의 tail에 남아 있는 문제가 있었습니다
     
 #### 수정 후
-```swift
-func test_a와_b_두개의_Node를_가진_LinkedList에서_removeFirst를_두번한다면_head와_tail은_nil이다() {
-    // given
-    let firstValue = "a"
-    let secondValue = "b"
-    // when
-    sut.append(firstValue)
-    sut.append(secondValue)
-    _ = sut.removeFirst()
-    _ = sut.removeFirst()
-
-    let headValue = sut.head
-    let tailValue = sut.tail
-    // then
-    XCTAssertNil(headValue)
-    XCTAssertNil(tailValue)
-} 
-```
-* head와 tail이 nil이 되는 상황을 확인하기 위한 테스트코드를 작성했습니다
-    
 ```swift
 mutating func removeFirst() -> Element? {
     let value = self.head?.value
@@ -274,3 +242,4 @@ func scrollToBottom() {
 * [Swift-Generic](https://docs.swift.org/swift-book/LanguageGuide/Generics.html)
 * [UML 참고자료](https://zdodev.github.io/uml/swift/UML-Class-Diagram/)
 * [자동 scroll](https://stackoverflow.com/questions/952412/uiscrollview-scroll-to-bottom-programmatically)
+
