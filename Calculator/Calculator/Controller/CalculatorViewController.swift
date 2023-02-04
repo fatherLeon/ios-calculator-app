@@ -76,8 +76,7 @@ final class CalculatorViewController: UIViewController {
             let result = formula.result()
             
             if result.isNaN {
-                resetPropertity()
-                resetLabel()
+                resetAll()
                 self.currentOperandLabel.text = "NaN"
                 self.isCalculated = false
                 self.isCalculated = true
@@ -87,8 +86,7 @@ final class CalculatorViewController: UIViewController {
             
             let formattedOperand = formattingNumber("\(result)")
             
-            resetPropertity()
-            resetLabel()
+            resetAll()
             self.currentOperand = "\(formattedOperand)"
             self.currentOperandLabel.text = formattedOperand
             self.isCalculated = true
@@ -96,8 +94,7 @@ final class CalculatorViewController: UIViewController {
     }
     
     private func clearAll() {
-        resetPropertity()
-        resetLabel()
+        resetAll()
         self.removeAllStackView()
     }
     
@@ -198,15 +195,14 @@ final class CalculatorViewController: UIViewController {
         self.currentOperatorLabel.text?.removeAll()
     }
     
-    private func resetPropertity() {
+    private func resetInputs() {
         self.inputs.removeAll()
-        self.currentOperand.removeAll()
-        self.currentOperator.removeAll()
     }
     
-    private func resetLabel() {
-        self.currentOperandLabel.text = CalculatorInitial.initLabel
-        self.currentOperatorLabel.text?.removeAll()
+    private func resetAll() {
+        resetOperand()
+        resetOperator()
+        resetInputs()
     }
 }
 
