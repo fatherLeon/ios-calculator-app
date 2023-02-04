@@ -99,8 +99,8 @@ final class CalculatorViewController: UIViewController {
     }
     
     private func clearCurrentOperand() {
-        self.currentOperand = ""
-        self.currentOperandLabel.text = "0"
+        self.currentOperand = CalculatorInitial.initValue
+        self.currentOperandLabel.text = CalculatorInitial.initLabel
     }
     
     private func reverseOperand() {
